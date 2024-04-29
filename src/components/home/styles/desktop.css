@@ -1,0 +1,31 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 100%;
+    overflow: auto;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.chatsSpace {
+    height: calc(100% - 70px - 40px);
+    width: calc(100% - 40px);
+    margin-top: 10px;
+    /* margin-inline: 20px; */
+    display: flex;
+    
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.1);
+
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.optionsBar {
+    height: 70px;
+    width: calc(100% - 40px);
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}

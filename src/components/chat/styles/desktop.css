@@ -1,0 +1,103 @@
+.chatBox {
+    background-color: var(--chat-background-color);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-width: 400px;
+    margin-inline: 10px;
+    margin-block: 10px;
+
+    transition-property: width;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+.barChatBox {
+    background-color: var(--bar-color);
+    color: var(--text-color);
+    height: 30px;
+    display: flex;
+    place-items: center;
+    place-content: center;
+}
+
+.barChatBoxContent {
+    height: 100%;
+    width: 100%;
+    margin-inline: 15px;
+    display: flex;
+    place-items: center;
+}
+
+.historySpaceChatBox {
+    background-color: var(--chat-background-color);
+    flex-grow: 1;
+    color: var(--text-color);
+    display: flex;
+}
+
+.historySpaceChatBoxContent {
+    flex-grow: 1;
+    /* background-color: blue; */
+    margin-block: 10px;
+    margin-inline: 10px;
+}
+
+.inputMessageSpace {
+    /* height: 60px; */
+    margin-bottom: 10px;
+    margin-inline: 10px ;
+}
+
+.inputMessageSpaceContent {
+    height: 100%;
+    display: flex;
+    place-content: center;
+    place-items: flex-end;
+    gap: 5px;
+    background-color: aqua;
+    background-color: rgba(255, 255, 255, 0.075);
+    border-radius: 10px;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: var(--line-color);
+}
+
+.inputMessage{
+    /* height: 80%; */
+    flex-grow: 0.9;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 18px;
+    color: var(--text-color);
+    place-self: center;
+    border: none;
+    /* border-radius: 5px; */
+}
+.inputMessage:focus{
+    border:none;
+    outline: none;   
+}
+
+
+.buttonSendMesage{
+    height: 35px;
+    aspect-ratio: 1/1;
+    background-color: rgba(255, 255, 255, 0.0);
+    border: none;
+    scale: 1;
+    opacity: 0.9;
+    cursor: pointer;    
+    transition-property: scale, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+.buttonSendMesage:hover{
+    scale: 1.1;
+    opacity: 1;
+}
