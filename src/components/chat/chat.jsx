@@ -1,23 +1,14 @@
+import { useState } from 'react'
+import AutoResizeTextarea from '../utils/textArea/textArea'
 import './styles/desktop.css'
 
-function Chat() {
-    const id = 1
+function Chat({ id = null }) {
     return (
         <div className='chatBox'>
-            <BarChatBox id={id} />
+            {/* <BarChatBox id={id} /> */}
             <ChatHistory />
             <SendMessageToChat />
         </div>)
-}
-
-function BarChatBox({ id }) {
-    return <div className='barChatBox'>
-        <div className='barChatBoxContent'>
-            <text>
-                {`chat id: ${id}`}
-            </text>
-        </div>
-    </div>
 }
 
 function ChatHistory({ id }) {
@@ -31,13 +22,19 @@ function ChatHistory({ id }) {
 }
 
 function SendMessageToChat() {
+    const [query, setQuery] = useState("")
+    const inputMessage = <AutoResizeTextarea setQuery={setQuery} />
+
     return <div className='inputMessageSpace'>
         {/* <div className='line' /> */}
         <div className='inputMessageSpaceContent'>
-            <input className='inputMessage' type="text" placeholder='send message'/>
-            <button className='buttonSendMesage'>
-                <img style={{width: '100%', height:'100%'}}
-                src="/icons/send.svg" alt="" />
+            {/* <textarea className='inputMessage' type="text" placeholder='send message'  /> */}
+            {inputMessage}
+            <button className='buttonSendMesage'
+                onClick={() => { }}
+            >
+                <img style={{ width: '100%', height: '100%' }}
+                    src="/icons/dark/send.svg" alt="" />
             </button>
         </div>
     </div>

@@ -1,0 +1,16 @@
+.inputTextArea{
+    flex-grow: 0.9;
+    margin-block: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+    color: var(--text-color);
+    place-self: center;
+    border: none;
+
+    overflow: auto; 
+    resize: none; 
+}
+.inputTextArea:focus{
+    border:none;
+    outline: none;   
+}

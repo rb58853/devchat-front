@@ -6,9 +6,11 @@
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    min-width: 400px;
+    /* min-width: 400px; */
     margin-inline: 10px;
     margin-block: 10px;
+    width: 100%;
+    height: 100%;
 
     transition-property: width;
     transition-duration: 200ms;
@@ -58,8 +60,7 @@
     place-content: center;
     place-items: flex-end;
     gap: 5px;
-    background-color: aqua;
-    background-color: rgba(255, 255, 255, 0.075);
+    background-color: var(--input-message-backgroundcolor);
     border-radius: 10px;
 }
 
@@ -77,7 +78,9 @@
     color: var(--text-color);
     place-self: center;
     border: none;
-    /* border-radius: 5px; */
+
+    overflow: auto; /* Permite desplazamiento si el contenido excede la altura máxima */
+    resize: none; /* Deshabilita el redimensionamiento manual por el usuario */
 }
 .inputMessage:focus{
     border:none;
