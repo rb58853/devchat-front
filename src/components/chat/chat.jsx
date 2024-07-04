@@ -4,7 +4,8 @@ import './styles/desktop.css'
 
 import React, { useEffect } from 'react';
 import { responseToJson } from './core/decode';
-import Message from './chatComponents/message/message';
+import UserMessage from './chatComponents/message/userMessage';
+import ServerMessage from './chatComponents/message/serverMessage';
 
 
 function Chat({ id = null, store_name = "test_data" }) {
@@ -25,7 +26,7 @@ function Chat({ id = null, store_name = "test_data" }) {
         ws.onmessage = (event) => {
             // Agregar mensajes recibidos a la lista de mensajes
             let data = responseToJson(event.data)
-            setMessages(prevMessages => [...prevMessages, <Message text={data['response']} />]);
+            setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
             // setMessages(prevMessages => [...prevMessages, event.data]);
 
         };
@@ -50,7 +51,7 @@ function Chat({ id = null, store_name = "test_data" }) {
         if (ws && query.trim() !== '') {
             ws.send(query);
             if (intialMessage) {
-                setMessages(prevMessages => [...prevMessages, <Message text={query} />]);
+                setMessages(prevMessages => [...prevMessages, <UserMessage text={query} />]);
             }
             setInitialMEssage(true);
             setQuery('');

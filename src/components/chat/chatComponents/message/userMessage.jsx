@@ -1,9 +1,12 @@
-function UserMessage({text}){
+import './styles/desktop.css'
+function UserMessage({ text }) {
     return (
-        <text>
-            {text}
-            <hr />
-        </text>
+        <div className="userMessage">
+            <text>
+                {text}
+            </text>
+            <div className="line" />
+        </div>
     )
 }
 
