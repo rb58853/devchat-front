@@ -16,7 +16,7 @@ function Chat({ id = null, store_name = "test_data" }) {
 
     useEffect(() => {
         // Crear conexión WebSocket
-        const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat');
+        const ws = new WebSocket('ws://192.168.1.251:8000/ws/chat');
         // const ws = new WebSocket('wss://dev.chat.flowychat.com/api/ws/chat');
 
         ws.onopen = () => {

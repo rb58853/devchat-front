@@ -17,9 +17,11 @@ function ServerMessage({ data }) {
             <text className='headerServer'>
                 {header}
             </text>
-            <div className='products'>
-                {products}
-            </div>
+            {products.length > 0 &&
+                <div className='products'>
+                    {products}
+                </div>
+            }
         </div>
     )
 }
