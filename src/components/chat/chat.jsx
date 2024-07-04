@@ -3,11 +3,13 @@ import AutoResizeTextarea from '../utils/textArea/textArea'
 import './styles/desktop.css'
 
 import React, { useEffect } from 'react';
+import { responseToJson } from './core/decode';
+import Message from './chatComponents/message/message';
+
 
 function Chat({ id = null, store_name = "test_data" }) {
     const [ws, setWs] = useState(null);
     const [messages, setMessages] = useState([]);
-    // const [query, setQuery] = useState("Texto");
     const [query, setQuery] = useState(`{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`);
     const [intialMessage, setInitialMEssage] = useState(false)
 
@@ -22,8 +24,9 @@ function Chat({ id = null, store_name = "test_data" }) {
 
         ws.onmessage = (event) => {
             // Agregar mensajes recibidos a la lista de mensajes
-            console.log('event.data');
-            setMessages(prevMessages => [...prevMessages, event.data]);
+            let data = responseToJson(event.data)
+            setMessages(prevMessages => [...prevMessages, <Message text={data['response']} />]);
+            // setMessages(prevMessages => [...prevMessages, event.data]);
 
         };
 
@@ -46,36 +49,33 @@ function Chat({ id = null, store_name = "test_data" }) {
     const sendMessage = () => {
         if (ws && query.trim() !== '') {
             ws.send(query);
-            setQuery('');
+            if (intialMessage) {
+                setMessages(prevMessages => [...prevMessages, <Message text={query} />]);
+            }
             setInitialMEssage(true);
+            setQuery('');
         }
     };
+
     // useEffect(() => { if (!intialMessage) { sendMessage() } }, [ws, intialMessage])
 
     return (
         <div className='chatBox'>
-            {/* <BarChatBox id={id} /> */}
-            <text style={{ color: 'white' }}>
-                {/* {query} */}
-                {messages}
-            </text>
-            <ChatHistory />
-            <SendMessageToChat sendMessage={sendMessage} setQuery={setQuery} />
+            <ChatHistory messages={messages} />
+            <SendMessageToChat sendMessage={sendMessage} query={query} setQuery={setQuery} />
         </div>)
 }
 
-function ChatHistory() {
+function ChatHistory({ messages }) {
     return <div className='historySpaceChatBox'>
         <div className='historySpaceChatBoxContent'>
-            <text className=''>
-                {`Historia del chat y to eso`}
-            </text>
+            {messages}
         </div>
     </div>
 }
 
-function SendMessageToChat({ sendMessage, setQuery }) {
-    const inputMessage = <AutoResizeTextarea setQuery={setQuery} />
+function SendMessageToChat({ sendMessage, query, setQuery }) {
+    const inputMessage = <AutoResizeTextarea query={query} setQuery={setQuery} />
 
     return <div className='inputMessageSpace'>
         {/* <div className='line' /> */}

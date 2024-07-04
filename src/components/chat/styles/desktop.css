@@ -46,6 +46,8 @@
     /* background-color: blue; */
     margin-block: 10px;
     margin-inline: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .inputMessageSpace {
