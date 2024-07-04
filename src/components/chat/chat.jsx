@@ -6,13 +6,15 @@ import React, { useEffect } from 'react';
 import { responseToJson } from './core/decode';
 import UserMessage from './chatComponents/message/userMessage';
 import ServerMessage from './chatComponents/message/serverMessage';
+import WaitMessage from './chatComponents/message/waitMessage';
 
 
 function Chat({ id = null, store_name = "test_data" }) {
+    const configMessage = `{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`
     const [ws, setWs] = useState(null);
     const [messages, setMessages] = useState([]);
-    const [query, setQuery] = useState(`{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`);
-    const [intialMessage, setInitialMEssage] = useState(false)
+    const [query, setQuery] = useState('');
+    const [connected, setConnected] = useState(false)
 
     useEffect(() => {
         // Crear conexión WebSocket
@@ -21,14 +23,27 @@ function Chat({ id = null, store_name = "test_data" }) {
 
         ws.onopen = () => {
             console.log('Conectado al servidor');
+            ws.send(configMessage);
         };
 
         ws.onmessage = (event) => {
-            // Agregar mensajes recibidos a la lista de mensajes
-            let data = responseToJson(event.data)
-            setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
-            // setMessages(prevMessages => [...prevMessages, event.data]);
-
+            if (event.data == 'connected') {
+                setConnected(true)
+            }
+            else {
+                let data = responseToJson(event.data)
+                // setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
+                setMessages(prevMessages => {
+                    // Calcula el índice del penúltimo elemento
+                    const lastIndex = prevMessages.length - 1;
+                  
+                    // Crea una nueva lista con el penúltimo elemento excluido
+                    const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
+                  
+                    return newMessages;
+                  });
+                  
+            }
         };
 
         ws.onerror = (error) => {
@@ -41,25 +56,39 @@ function Chat({ id = null, store_name = "test_data" }) {
 
         setWs(ws);
 
-        // sendMessage()
         return () => {
             ws.close();
         };
     }, []);
 
     const sendMessage = () => {
-        if (ws && query.trim() !== '') {
+        if (ws && ws.readyState === WebSocket.OPEN && query.trim() !== '') {
             ws.send(query);
-            if (intialMessage) {
-                setMessages(prevMessages => [...prevMessages, <UserMessage text={query} />]);
-            }
-            setInitialMEssage(true);
+            setMessages(prevMessages => [...prevMessages, <UserMessage text={query} />, <WaitMessage />]);
             setQuery('');
         }
     };
 
-    // useEffect(() => { if (!intialMessage) { sendMessage() } }, [ws, intialMessage])
+    return (
+        <div>
+            {connected ? <ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} /> : <UnconnectedChat />
+            }
+        </div>
+    )
+}
 
+function UnconnectedChat() {
+    return (
+        <div className='chatBox disconnected'>
+            <img src="/gifs/loading.gif" alt="connecting"
+                style={{ width: "70px", height: "70px" }} />
+            <text style={{ fontSize: '80%', marginTop: '20px' }}>
+                CONNECTING
+            </text>
+        </div>)
+}
+
+function ConnectedChat({ messages, sendMessage, query, setQuery }) {
     return (
         <div className='chatBox'>
             <ChatHistory messages={messages} />

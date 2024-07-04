@@ -16,6 +16,12 @@
     transition-property: width;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
+    color: var(--text-color);
+
+}
+.chatBox.disconnected{
+    place-content: center;
+    place-items: center;
 }
 
 .barChatBox {

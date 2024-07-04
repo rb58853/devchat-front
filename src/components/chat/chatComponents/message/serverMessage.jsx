@@ -14,10 +14,19 @@ function ServerMessage({ data }) {
 
     return (
         <div className="serverMessage">
+            
+            {data && <Message products={products} header={header} />}
+        </div>
+    )
+}
+function Message({ products, header }) {
+    return (
+        <div>
             <text className='headerServer'>
                 {header}
             </text>
-            {products.length > 0 &&
+            {
+                products.length > 0 &&
                 <div className='products'>
                     {products}
                 </div>
@@ -25,6 +34,7 @@ function ServerMessage({ data }) {
         </div>
     )
 }
+
 
 function getProductFromId(products, id) {
     // Utilizamos find para buscar en el array products
