@@ -27,8 +27,11 @@ function Chat({ id = null, store_name = "test_data" }) {
         };
 
         ws.onmessage = (event) => {
-            if (event.data == 'connected') {
-                setConnected(true)
+            if (event.data == 'connected' || event.data.slice(0, 5) == 'error') {
+                if (event.data == 'connected')
+                    setConnected(true)
+                if (event.data.slice(0, 5) == 'error')
+                    setConnected(false)
             }
             else {
                 let data = responseToJson(event.data)
@@ -36,13 +39,13 @@ function Chat({ id = null, store_name = "test_data" }) {
                 setMessages(prevMessages => {
                     // Calcula el índice del penúltimo elemento
                     const lastIndex = prevMessages.length - 1;
-                  
+
                     // Crea una nueva lista con el penúltimo elemento excluido
                     const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
-                  
+
                     return newMessages;
-                  });
-                  
+                });
+
             }
         };
 
@@ -58,6 +61,7 @@ function Chat({ id = null, store_name = "test_data" }) {
 
         return () => {
             ws.close();
+            setConnected(false)
         };
     }, []);
 
@@ -105,7 +109,7 @@ function ChatHistory({ messages }) {
 }
 
 function SendMessageToChat({ sendMessage, query, setQuery }) {
-    const inputMessage = <AutoResizeTextarea query={query} setQuery={setQuery} />
+    const inputMessage = <AutoResizeTextarea query={query} setQuery={setQuery} sendMessage={sendMessage}/>
 
     return <div className='inputMessageSpace'>
         {/* <div className='line' /> */}

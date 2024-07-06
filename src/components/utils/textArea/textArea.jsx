@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import './styles/desktop.css';
 
-const AutoResizeTextarea = ({query,setQuery}) => {
+const AutoResizeTextarea = ({ query, setQuery, sendMessage }) => {
     const textareaRef = useRef(null);
 
     useEffect(() => {
@@ -33,8 +33,8 @@ const AutoResizeTextarea = ({query,setQuery}) => {
             placeholder='send message'
             ref={textareaRef} // Asigna la referencia al elemento textarea
             value={query}
+            onkeydown={() => { }}
             onChange={(e) => setQuery(e.target.value)
-
             }
         ></textarea>
     );
