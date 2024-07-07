@@ -1,12 +1,16 @@
-import Chat from '../chat/chat'
+import { Link } from 'react-router-dom'
 import './styles/desktop.css'
-import { useState } from 'react'
 
 function Home() {
     return (
         <section className="home">
             {/* <Bar/> */}
-            <Chat />
+            {/* <Chat /> */}
+            <Link to="/chat">
+                <button className='button'>
+                    New chat
+                </button>
+            </Link>
         </section>
     )
 }

@@ -1,7 +1,8 @@
 {
-  "name": "manage-typesense",
+  "name": "beta-chat",
   "version": "0.1.0",
   "private": true,
+  
   "dependencies": {
     "@react-hook/resize-observer": "^1.2.6",
     "@reduxjs/toolkit": "^2.2.1",

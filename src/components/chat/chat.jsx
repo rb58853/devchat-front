@@ -8,6 +8,29 @@ import UserMessage from './chatComponents/message/userMessage';
 import ServerMessage from './chatComponents/message/serverMessage';
 import WaitMessage from './chatComponents/message/waitMessage';
 
+const url = 'ws://192.168.1.251:8000/ws/chat'; // Puedes cambiar esto según tus necesidades
+
+function connectWebSocket(url, configMessage) {
+    return new Promise((resolve, reject) => {
+        const ws = new WebSocket(url);
+
+        ws.onopen = () => {
+            console.log('Conectado al servidor');
+            ws.send(configMessage);
+            resolve(ws); // Resolvemos la promesa cuando la conexión es abierta
+        };
+
+        ws.onerror = (error) => {
+            console.error('Error en la conexión:', error);
+            reject(error); // Rechazamos la promesa si hay un error
+        };
+
+        ws.onclose = () => {
+            console.log('Desconectado del servidor');
+            // Aquí podrías manejar la reconexión o simplemente cerrar la conexión
+        };
+    });
+}
 
 function Chat({ id = null, store_name = "test_data" }) {
     const configMessage = `{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`
@@ -16,52 +39,46 @@ function Chat({ id = null, store_name = "test_data" }) {
     const [query, setQuery] = useState('');
     const [connected, setConnected] = useState(false)
 
+
     useEffect(() => {
-        // Crear conexión WebSocket
-        const ws = new WebSocket('ws://192.168.1.251:8000/ws/chat');
-        // const ws = new WebSocket('wss://dev.chat.flowychat.com/api/ws/chat');
+        if (!ws) {
+            connectWebSocket(url, configMessage)
+                .then((ws) => {
+                    setWs(ws);
+                    ws.onmessage = (event) => {
+                        if (event.data == 'connected' || event.data.slice(0, 5) == 'error') {
+                            if (event.data == 'connected')
+                                setConnected(true)
+                            if (event.data.slice(0, 5) == 'error')
+                                setConnected(false)
+                        }
+                        else {
+                            let data = responseToJson(event.data)
+                            // setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
+                            setMessages(prevMessages => {
+                                // Calcula el índice del penúltimo elemento
+                                const lastIndex = prevMessages.length - 1;
 
-        ws.onopen = () => {
-            console.log('Conectado al servidor');
-            ws.send(configMessage);
-        };
+                                // Crea una nueva lista con el penúltimo elemento excluido
+                                const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
 
-        ws.onmessage = (event) => {
-            if (event.data == 'connected' || event.data.slice(0, 5) == 'error') {
-                if (event.data == 'connected')
-                    setConnected(true)
-                if (event.data.slice(0, 5) == 'error')
-                    setConnected(false)
-            }
-            else {
-                let data = responseToJson(event.data)
-                // setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
-                setMessages(prevMessages => {
-                    // Calcula el índice del penúltimo elemento
-                    const lastIndex = prevMessages.length - 1;
+                                return newMessages;
+                            });
 
-                    // Crea una nueva lista con el penúltimo elemento excluido
-                    const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
-
-                    return newMessages;
+                        }
+                    };
+                })
+                .catch((error) => {
+                    console.error("No se pudo conectar al servidor:", error);
+                    setConnected(false);
+                    // Aquí puedes manejar el error, como intentar reconectar o mostrar un mensaje al usuario
                 });
-
-            }
-        };
-
-        ws.onerror = (error) => {
-            console.error('Error en la conexión:', error);
-        };
-
-        ws.onclose = () => {
-            console.log('Desconectado del servidor');
-        };
-
-        setWs(ws);
-
+        }
         return () => {
-            ws.close();
-            setConnected(false)
+            if (ws) {
+                ws.close();
+                setConnected(false);
+            }
         };
     }, []);
 
@@ -109,7 +126,7 @@ function ChatHistory({ messages }) {
 }
 
 function SendMessageToChat({ sendMessage, query, setQuery }) {
-    const inputMessage = <AutoResizeTextarea query={query} setQuery={setQuery} sendMessage={sendMessage}/>
+    const inputMessage = <AutoResizeTextarea query={query} setQuery={setQuery} sendMessage={sendMessage} />
 
     return <div className='inputMessageSpace'>
         {/* <div className='line' /> */}

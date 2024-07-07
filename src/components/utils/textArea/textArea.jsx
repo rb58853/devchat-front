@@ -31,10 +31,14 @@ const AutoResizeTextarea = ({ query, setQuery, sendMessage }) => {
         <textarea
             className='inputTextArea'
             placeholder='send message'
-            ref={textareaRef} // Asigna la referencia al elemento textarea
+            ref={textareaRef}
             value={query}
-            onkeydown={() => { }}
-            onChange={(e) => setQuery(e.target.value)
+            onkeydown={(e) => {
+                if (e.key === 'Enter')
+                    sendMessage()
+            }}
+            onChange={
+                (e) => setQuery(e.target.value)
             }
         ></textarea>
     );
