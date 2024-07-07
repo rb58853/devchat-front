@@ -1,10 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import './styles/desktop.css'
 function Product({ product_data, comment }) {
-    // const link = product_data['link']
-    const link = "link/to/testing"
+    const link = product_data['link']
+    let navigate = useNavigate()
 
     return (
-        <div className="product">
+        <button className="product"
+            onClick={() => {
+                navigate('/product', { state: { product_data } });
+            }}
+        >
             <div className="productSpace">
                 img
             </div>
@@ -18,7 +23,7 @@ function Product({ product_data, comment }) {
                 {comment}
             </text>
 
-        </div>
+        </button>
     )
 
 }
