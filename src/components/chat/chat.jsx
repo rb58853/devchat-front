@@ -95,14 +95,14 @@ function Chat({ id = null, store_name = "test_data" }) {
                 });
         }
         dispatch(setWsMessages(messages))
-        return () => {
-            if (ws) {
-                ws.close();
-                setConnected(false);
-                dispatch(setWsConnected(false))
-                dispatch(setWs(null))
-            }
-        };
+        // return () => {
+        //     if (ws) {
+        //         ws.close();
+        //         setConnected(false);
+        //         dispatch(setWsConnected(false))
+        //         dispatch(setWs(null))
+        //     }
+        // };
 
     }, []);
 
