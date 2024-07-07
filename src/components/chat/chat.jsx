@@ -7,6 +7,8 @@ import { responseToJson } from './core/decode';
 import UserMessage from './chatComponents/message/userMessage';
 import ServerMessage from './chatComponents/message/serverMessage';
 import WaitMessage from './chatComponents/message/waitMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
 
 const url = 'ws://192.168.1.251:8000/ws/chat'; // Puedes cambiar esto según tus necesidades
 
@@ -34,27 +36,35 @@ function connectWebSocket(url, configMessage) {
 
 function Chat({ id = null, store_name = "test_data" }) {
     const configMessage = `{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`
-    const [ws, setWs] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const dispatch = useDispatch();
     const [query, setQuery] = useState('');
-    const [connected, setConnected] = useState(false)
 
+    const webSocket = useSelector((state) => state.ws)
+    const [ws, setThisWs] = useState(webSocket.ws);
+    const [messages, setMessages] = useState(webSocket.messages);
+    const [connected, setConnected] = useState(webSocket.connected)
 
     useEffect(() => {
-        if (!ws) {
+        if (!connected) {
             connectWebSocket(url, configMessage)
                 .then((ws) => {
-                    setWs(ws);
+                    setThisWs(ws);
+                    dispatch(setWs(ws))
+
                     ws.onmessage = (event) => {
                         if (event.data == 'connected' || event.data.slice(0, 5) == 'error') {
-                            if (event.data == 'connected')
+                            if (event.data == 'connected') {
                                 setConnected(true)
-                            if (event.data.slice(0, 5) == 'error')
+                                dispatch(setWsConnected(true))
+
+                            }
+                            if (event.data.slice(0, 5) == 'error') {
                                 setConnected(false)
+                                dispatch(setWsConnected(false))
+                            }
                         }
                         else {
                             let data = responseToJson(event.data)
-                            // setMessages(prevMessages => [...prevMessages, <ServerMessage data={data} />]);
                             setMessages(prevMessages => {
                                 // Calcula el índice del penúltimo elemento
                                 const lastIndex = prevMessages.length - 1;
@@ -64,6 +74,15 @@ function Chat({ id = null, store_name = "test_data" }) {
 
                                 return newMessages;
                             });
+                            dispatch(setWsMessages(prevMessages => {
+                                // Calcula el índice del penúltimo elemento
+                                const lastIndex = prevMessages.length - 1;
+
+                                // Crea una nueva lista con el penúltimo elemento excluido
+                                const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
+
+                                return newMessages;
+                            }))
 
                         }
                     };
@@ -71,29 +90,35 @@ function Chat({ id = null, store_name = "test_data" }) {
                 .catch((error) => {
                     console.error("No se pudo conectar al servidor:", error);
                     setConnected(false);
+                    dispatch(setWsConnected(false))
                     // Aquí puedes manejar el error, como intentar reconectar o mostrar un mensaje al usuario
                 });
         }
+        dispatch(setWsMessages(messages))
         return () => {
             if (ws) {
                 ws.close();
                 setConnected(false);
+                dispatch(setWsConnected(false))
+                dispatch(setWs(null))
             }
         };
+
     }, []);
 
     const sendMessage = () => {
         if (ws && ws.readyState === WebSocket.OPEN && query.trim() !== '') {
             ws.send(query);
             setMessages(prevMessages => [...prevMessages, <UserMessage text={query} />, <WaitMessage />]);
+            dispatch(setWsMessages(prevMessages => [...prevMessages, <UserMessage text={query} />, <WaitMessage />]))
             setQuery('');
         }
     };
 
     return (
         <div>
-            {connected ? <ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} /> : <UnconnectedChat />
-            }
+            {connected ? <ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} /> : <UnconnectedChat />}
+            {/* {<ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} />} */}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom';
+import { createHashRouter, createBrowserRouter } from 'react-router-dom';
 import App from '../App.jsx';
 import Home from '../components/home/home.jsx';
 import Chat from '../components/chat/chat.jsx';
@@ -14,9 +14,10 @@ const routes = [
         element: <App content={<Chat />} />,
     },
     {
-        path: "/product",
+        // path: "/product",
+        path: "/product/:data",
         element: <App content={<ProductView />} />,
     },
 ]
 
-export const router = createHashRouter(routes)
+export const router = createBrowserRouter(routes)

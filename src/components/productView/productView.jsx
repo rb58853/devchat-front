@@ -1,27 +1,28 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom'
 import './styles/desktop.css'
 
 function ProductView() {
-    let location = useLocation();
-    let product_data = location.state.data;
+    let { data } = useParams()
+    data = data.split("=")[1]
+    data =  data.replace(/\+/g, " ");
+    data = JSON.parse(data)
 
     return (
         <div className="productView">
-            <text>
-                {product_data}
-            </text>
-            {/* <h1>
-                {product_data['name']}
+            <h1
+                // style={{ placeSelf: 'center' }}
+            >
+                {data['name']}
             </h1>
             <text>
-                {`query similarity: ${product_data["similarity"]}`}
+                {`query similarity: ${(data["similarity"]*100)}%`}
             </text>
             <p>
-                {product_data['description']}
+                {data['description']}
             </p>
             <p>
-                {product_data['features']}
-            </p> */}
+                {data['features']}
+            </p>
         </div>
     )
 }
