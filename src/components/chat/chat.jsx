@@ -8,7 +8,7 @@ import UserMessage from './chatComponents/message/userMessage';
 import ServerMessage from './chatComponents/message/serverMessage';
 import WaitMessage from './chatComponents/message/waitMessage';
 import { useDispatch, useSelector } from 'react-redux';
-import { setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
+import { addWsMessage, popWsMessage, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
 
 const url = 'ws://192.168.1.251:8000/ws/chat'; // Puedes cambiar esto según tus necesidades
 
@@ -41,7 +41,6 @@ function Chat({ id = null, store_name = "test_data" }) {
 
     const webSocket = useSelector((state) => state.ws)
     const [ws, setThisWs] = useState(webSocket.ws);
-    const [messages, setMessages] = useState(webSocket.messages);
     const [connected, setConnected] = useState(webSocket.connected)
 
     useEffect(() => {
@@ -52,38 +51,23 @@ function Chat({ id = null, store_name = "test_data" }) {
                     dispatch(setWs(ws))
 
                     ws.onmessage = (event) => {
-                        if (event.data == 'connected' || event.data.slice(0, 5) == 'error') {
-                            if (event.data == 'connected') {
+                        if (event.data === 'connected' || event.data.slice(0, 5) === 'error') {
+                            if (event.data === 'connected') {
                                 setConnected(true)
                                 dispatch(setWsConnected(true))
 
                             }
-                            if (event.data.slice(0, 5) == 'error') {
+                            if (event.data.slice(0, 5) === 'error') {
                                 setConnected(false)
                                 dispatch(setWsConnected(false))
                             }
                         }
                         else {
                             let data = responseToJson(event.data)
-                            setMessages(prevMessages => {
-                                // Calcula el índice del penúltimo elemento
-                                const lastIndex = prevMessages.length - 1;
-
-                                // Crea una nueva lista con el penúltimo elemento excluido
-                                const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
-
-                                return newMessages;
-                            });
-                            dispatch(setWsMessages(prevMessages => {
-                                // Calcula el índice del penúltimo elemento
-                                const lastIndex = prevMessages.length - 1;
-
-                                // Crea una nueva lista con el penúltimo elemento excluido
-                                const newMessages = prevMessages.slice(0, lastIndex).concat(<ServerMessage data={data} />);
-
-                                return newMessages;
-                            }))
-
+                            // dispatch(setWsMessages([...webSocket.messages, <ServerMessage data={data} />]))
+                            dispatch(popWsMessage())
+                            dispatch(addWsMessage(<ServerMessage data={data} />))
+                            // dispatch(setWsMessages(webSocket.messages.slice(0, webSocket.messages.length - 1).concat(<ServerMessage data={data} />)))
                         }
                     };
                 })
@@ -94,31 +78,19 @@ function Chat({ id = null, store_name = "test_data" }) {
                     // Aquí puedes manejar el error, como intentar reconectar o mostrar un mensaje al usuario
                 });
         }
-        dispatch(setWsMessages(messages))
-        // return () => {
-        //     if (ws) {
-        //         ws.close();
-        //         setConnected(false);
-        //         dispatch(setWsConnected(false))
-        //         dispatch(setWs(null))
-        //     }
-        // };
-
-    }, []);
+    }, [configMessage, connected, dispatch, webSocket.messages]);
 
     const sendMessage = () => {
         if (ws && ws.readyState === WebSocket.OPEN && query.trim() !== '') {
             ws.send(query);
-            setMessages(prevMessages => [...prevMessages, <UserMessage text={query} />, <WaitMessage />]);
-            dispatch(setWsMessages(prevMessages => [...prevMessages, <UserMessage text={query} />, <WaitMessage />]))
+            dispatch(setWsMessages([...webSocket.messages, <UserMessage text={query} />, <WaitMessage />]))
             setQuery('');
         }
     };
 
     return (
         <div>
-            {connected ? <ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} /> : <UnconnectedChat />}
-            {/* {<ConnectedChat messages={messages} sendMessage={sendMessage} query={query} setQuery={setQuery} />} */}
+            {connected ? <ConnectedChat sendMessage={sendMessage} query={query} setQuery={setQuery} /> : <UnconnectedChat />}
         </div>
     )
 }
@@ -134,18 +106,21 @@ function UnconnectedChat() {
         </div>)
 }
 
-function ConnectedChat({ messages, sendMessage, query, setQuery }) {
+function ConnectedChat({ sendMessage, query, setQuery }) {
     return (
         <div className='chatBox'>
-            <ChatHistory messages={messages} />
+            <ChatHistory />
             <SendMessageToChat sendMessage={sendMessage} query={query} setQuery={setQuery} />
         </div>)
 }
 
-function ChatHistory({ messages }) {
+function ChatHistory() {
+    const webSocket = useSelector((state) => state.ws)
+
     return <div className='historySpaceChatBox'>
         <div className='historySpaceChatBoxContent'>
-            {messages}
+            {/* {messages} */}
+            {webSocket.messages}
         </div>
     </div>
 }

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
 
 const initialState = {
     ws: null,
@@ -20,8 +19,14 @@ export const wsSlice = createSlice({
         setWsMessages: (state, action) => {
             state.messages = action.payload;
         },
+        addWsMessage: (state, action) => {
+            state.messages = state.messages.concat(action.payload);
+        },
+        popWsMessage: (state ) => {
+            state.messages = state.messages.slice(0, state.messages.length - 1);
+        }
     }
 });
 
-export const { setWs, setWsConnected, setWsMessages } = wsSlice.actions;
+export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage } = wsSlice.actions;
 export default wsSlice.reducer;
