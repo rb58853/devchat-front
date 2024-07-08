@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addWsMessage, popWsMessage, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
 
 const url = 'ws://192.168.1.251:8000/ws/chat'; // Puedes cambiar esto según tus necesidades
+// const url = 'wss://dev.chat.flowychat.com/api/ws/chat'; // Puedes cambiar esto según tus necesidades
 
 function connectWebSocket(url, configMessage) {
     return new Promise((resolve, reject) => {
@@ -98,7 +99,7 @@ function Chat({ id = null, store_name = "test_data" }) {
 function UnconnectedChat() {
     return (
         <div className='chatBox disconnected'>
-            <img src="/gifs/loading.gif" alt="connecting"
+            <img src={process.env.PUBLIC_URL + "/gifs/loading.gif"} alt="connecting"
                 style={{ width: "70px", height: "70px" }} />
             <text style={{ fontSize: '80%', marginTop: '20px' }}>
                 CONNECTING
@@ -137,7 +138,7 @@ function SendMessageToChat({ sendMessage, query, setQuery }) {
                 onClick={() => { sendMessage() }}
             >
                 <img style={{ width: '100%', height: '100%' }}
-                    src="/icons/dark/send.svg" alt="" />
+                    src={process.env.PUBLIC_URL + "/icons/dark/send.svg"} alt="" />
             </button>
         </div>
     </div>
