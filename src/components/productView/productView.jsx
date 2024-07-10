@@ -1,4 +1,4 @@
-import { useLocation, useParams } from 'react-router-dom'
+import {useParams } from 'react-router-dom'
 import './styles/desktop.css'
 
 function ProductView() {

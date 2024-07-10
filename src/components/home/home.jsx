@@ -15,7 +15,7 @@ function Home() {
         dispatch(setWs(null))
         dispatch(setWsMessages([]))
         dispatch(setWsConnected(false))
-    }, [])
+    }, [dispatch,ws])
 
     return (
         <section className="home">
@@ -26,14 +26,6 @@ function Home() {
                 </button>
             </Link>
         </section>
-    )
-}
-
-function Bar() {
-    return (
-        <div className='optionsBar'>
-
-        </div>
     )
 }
 
