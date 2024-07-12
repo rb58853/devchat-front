@@ -25,7 +25,7 @@ const AutoResizeTextarea = ({ query, setQuery, sendMessage }) => {
         return () => {
             textarea.removeEventListener('input', adjustHeight);
         };
-    }, []);
+    }, [query]);
 
     return (
         <textarea
@@ -33,13 +33,13 @@ const AutoResizeTextarea = ({ query, setQuery, sendMessage }) => {
             placeholder='send message'
             ref={textareaRef}
             value={query}
-            onkeydown={(e) => {
-                if (e.key === 'Enter')
-                    sendMessage()
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                    e.preventDefault();
+                }
             }}
-            onChange={
-                (e) => setQuery(e.target.value)
-            }
+            onChange={(e) => setQuery(e.target.value)}
         ></textarea>
     );
 };
