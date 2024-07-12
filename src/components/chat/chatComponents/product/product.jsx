@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import './styles/desktop.css'
 function Product({ product_data, comment }) {
-    const link = product_data['link']
+    // const link = product_data['link']
     const paramsURL = new URLSearchParams({ data: JSON.stringify(product_data) }).toString();
 
     return (

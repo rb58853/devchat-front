@@ -1,4 +1,4 @@
-import { createHashRouter, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.jsx';
 import Home from '../components/home/home.jsx';
 import Chat from '../components/chat/chat.jsx';
