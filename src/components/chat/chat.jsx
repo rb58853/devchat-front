@@ -10,7 +10,7 @@ import WaitMessage from './chatComponents/message/waitMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { addWsMessage, popWsMessage, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
 
-const url = 'wss://dev.chat.flowychat.com/api/ws/chat'; 
+const url = 'wss://dev.chat.flowychat.com/api/ws/chat';
 
 function connectWebSocket(url, configMessage) {
     return new Promise((resolve, reject) => {
@@ -35,11 +35,11 @@ function connectWebSocket(url, configMessage) {
 }
 
 function Chat({ id = null, store_name = "test_data" }) {
-    const configMessage = `{"store_name": "${store_name}", "chat_id": ${id ? id : '"None"'}}`
+    const webSocket = useSelector((state) => state.ws)
+    const configMessage = `{"store_name": "${webSocket.padel ? "padel_store" : store_name}", "chat_id": ${id ? id : '"None"'}}`
     const dispatch = useDispatch();
     const [query, setQuery] = useState('');
 
-    const webSocket = useSelector((state) => state.ws)
     const [ws, setThisWs] = useState(webSocket.ws);
     const [connected, setConnected] = useState(webSocket.connected)
 

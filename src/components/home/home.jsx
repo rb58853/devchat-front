@@ -36,7 +36,6 @@ function Home() {
                 {`PADEL STORE ${padel ? '✔️' : '❌'}`}
             </button>
 
-
             <Link to="/chat">
                 <button className='button'>
                     New chat
