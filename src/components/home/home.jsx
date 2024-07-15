@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import './styles/desktop.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice'
+import { setDebug, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice'
 
 function Home() {
     const dispatch = useDispatch()
@@ -15,6 +15,7 @@ function Home() {
         dispatch(setWs(null))
         dispatch(setWsMessages([]))
         dispatch(setWsConnected(false))
+        dispatch(setDebug(false))
     }, [dispatch,ws])
 
     return (

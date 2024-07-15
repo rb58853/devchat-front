@@ -1,7 +1,10 @@
+import { useSelector } from 'react-redux'
 import Product from '../product/product'
 import './styles/desktop.css'
 
 function ServerMessage({ data }) {
+    const webSocket = useSelector((state) => state.ws)
+    const debugMessage = <p>data['debug']</p>
     const header = data['products'].length > 0 ? data['nl']['head'] : data['response']
     let products = []
 
@@ -14,8 +17,8 @@ function ServerMessage({ data }) {
 
     return (
         <div className="serverMessage">
-            
             {data && <Message products={products} header={header} />}
+            {ws.debug && debugMessage}
         </div>
     )
 }

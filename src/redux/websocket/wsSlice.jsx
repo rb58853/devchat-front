@@ -4,6 +4,7 @@ const initialState = {
     ws: null,
     messages: [],
     connected: false,
+    debug: false,
 };
 
 export const wsSlice = createSlice({
@@ -22,11 +23,14 @@ export const wsSlice = createSlice({
         addWsMessage: (state, action) => {
             state.messages = state.messages.concat(action.payload);
         },
-        popWsMessage: (state ) => {
+        popWsMessage: (state) => {
             state.messages = state.messages.slice(0, state.messages.length - 1);
+        },
+        setDebug: (state, action) => {
+            state.debug = action.payload;
         }
     }
 });
 
-export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage } = wsSlice.actions;
+export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage, setDebug } = wsSlice.actions;
 export default wsSlice.reducer;
