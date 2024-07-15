@@ -10,8 +10,7 @@ import WaitMessage from './chatComponents/message/waitMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { addWsMessage, popWsMessage, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice';
 
-// const url = 'wss://dev.chat.flowychat.com/api/ws/chat'; 
-const url = 'ws://127.0.0.1:8000/ws/chat'; 
+const url = 'wss://dev.chat.flowychat.com/api/ws/chat'; 
 
 function connectWebSocket(url, configMessage) {
     return new Promise((resolve, reject) => {
