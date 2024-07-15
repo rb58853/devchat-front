@@ -25,7 +25,7 @@ function Home() {
                 onClick={() => { 
                     dispatch(setDebug(!debug))
                 }}>
-                {`debug ${debug ? 'ok' : 'no'}`}
+                {`DEBUG ${debug ? '✔️' : '❌'}`}
             </button>
 
             <Link to="/chat">

@@ -4,9 +4,19 @@ import './styles/desktop.css'
 
 function ServerMessage({ data }) {
     const ws = useSelector((state) => state.ws)
-    const debugMessage = <p>data['debug']</p>
     const header = data['products'].length > 0 ? data['nl']['head'] : data['response']
     let products = []
+
+    const debugmessages = data['debug'].split("|").map(item => {
+        return <p>{item}</p>
+    })
+    const debugMessage = (
+        <div>
+            <h3>DEBUG</h3>
+            {debugmessages}
+            <p>{`api price: ${data['api_price']}`}</p>
+        </div>
+    )
 
     if (data['products'].length > 0) {
         const nlProducts = data['nl']['products']
