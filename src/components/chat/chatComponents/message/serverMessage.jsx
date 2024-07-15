@@ -3,7 +3,7 @@ import Product from '../product/product'
 import './styles/desktop.css'
 
 function ServerMessage({ data }) {
-    const webSocket = useSelector((state) => state.ws)
+    const ws = useSelector((state) => state.ws)
     const debugMessage = <p>data['debug']</p>
     const header = data['products'].length > 0 ? data['nl']['head'] : data['response']
     let products = []

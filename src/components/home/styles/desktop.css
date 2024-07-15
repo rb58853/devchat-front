@@ -32,3 +32,16 @@
 .button:hover{
     background-color: white;
 }
+
+.buttonDebug {
+    background-color: rgb(182, 110, 110);
+    border: none;
+    font-size: 120%;
+    margin-bottom: 40px;
+    border-radius: 5px;
+}
+
+.buttonDebug.active{
+    background-color: rgb(118, 182, 110);
+
+}
