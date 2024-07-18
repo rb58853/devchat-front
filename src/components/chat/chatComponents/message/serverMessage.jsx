@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux'
 import Product from '../product/product'
 import './styles/desktop.css'
+import ReactMarkdown from 'react-markdown';
+
 
 function ServerMessage({ data }) {
     const ws = useSelector((state) => state.ws)
@@ -35,9 +37,9 @@ function ServerMessage({ data }) {
 function Message({ products, header }) {
     return (
         <div>
-            <text className='headerServer'>
+            <ReactMarkdown className='headerServer'>
                 {header}
-            </text>
+            </ReactMarkdown>
             {
                 products.length > 0 &&
                 <div className='products'>
