@@ -6,8 +6,28 @@ import ReactMarkdown from 'react-markdown';
 
 function ServerMessage({ data }) {
     const ws = useSelector((state) => state.ws)
+
     const header = data['products'].length > 0 ? data['nl']['head'] : data['response']
     let products = []
+    if (data['products'].length > 0) {
+        const nlProducts = data['nl']['products']
+        products = nlProducts.map(product => (
+            <Product key={product.id} product_data={getProductFromId(data['products'], product.id)} comment={product['comment']} />
+        ))
+    }
+
+    const others = 'other_products' in data
+    let other_products = []
+    const other_header = (others && data['other_products'].length > 0) ? data['nl']['other_head'] : ''
+
+    if (others) {
+        if (data['other_products'].length > 0) {
+            const nlProducts = data['nl']['other_products']
+            other_products = nlProducts.map(product => (
+                <Product key={product.id} product_data={getProductFromId(data['other_products'], product.id)} comment={product['comment']} />
+            ))
+        }
+    }
 
     const debugmessages = data['debug'].split("|").map(item => {
         return <p>{item}</p>
@@ -20,16 +40,10 @@ function ServerMessage({ data }) {
         </div>
     )
 
-    if (data['products'].length > 0) {
-        const nlProducts = data['nl']['products']
-        products = nlProducts.map(product => (
-            <Product key={product.id} product_data={getProductFromId(data['products'], product.id)} comment={product['comment']} />
-        ))
-    }
-
     return (
         <div className="serverMessage">
             {data && <Message products={products} header={header} />}
+            {others && <Message products={other_products} header={other_header} />}
             {ws.debug && debugMessage}
         </div>
     )
