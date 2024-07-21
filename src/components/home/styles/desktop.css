@@ -48,3 +48,19 @@
     background-color: rgb(118, 182, 110);
 
 }
+
+.storeName{
+    color: var(--text-color);
+    position: absolute;
+    top: 100px
+}
+
+.homeButtons{
+    position: absolute;
+    display: flex;
+    color: var(--text-color);
+    bottom: 10px;
+    height: auto;
+    gap: 20px;
+
+}

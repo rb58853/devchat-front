@@ -5,7 +5,8 @@ const initialState = {
     messages: [],
     connected: false,
     debug: false,
-    padel: false,
+    store: 'test_data',
+    indexStore: 0,
 };
 
 
@@ -31,11 +32,14 @@ export const wsSlice = createSlice({
         setDebug: (state, action) => {
             state.debug = action.payload;
         },
-        setPadel: (state, action) => {
-            state.padel = action.payload;
+        setStore: (state, action) => {
+            state.store = action.payload;
+        },
+        setIndexStore: (state, action) => {
+            state.indexStore = action.payload;
         }
     }
 });
 
-export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage, setDebug, setPadel } = wsSlice.actions;
+export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage, setDebug, setStore, setIndexStore } = wsSlice.actions;
 export default wsSlice.reducer;

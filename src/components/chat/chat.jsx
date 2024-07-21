@@ -37,7 +37,7 @@ function connectWebSocket(url, configMessage) {
 
 function Chat({ id = null, store_name = "test_data" }) {
     const webSocket = useSelector((state) => state.ws)
-    const configMessage = `{"store_name": "${webSocket.padel ? "padel_store" : store_name}", "chat_id": ${id ? id : '"None"'}}`
+    const configMessage = `{"store_name": "${webSocket.store}", "chat_id": ${id ? id : '"None"'}}`
     const dispatch = useDispatch();
     const [query, setQuery] = useState('');
 
