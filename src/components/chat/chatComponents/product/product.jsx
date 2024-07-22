@@ -7,7 +7,7 @@ function Product({ product_data, comment }) {
     const store = useSelector((state) => state.ws).store
 
     const paramsURL = new URLSearchParams({ data: JSON.stringify(product_data) }).toString();
-    const url = store != 'test_data' ? product_data['link'] : `{/product/${paramsURL}}`
+    const url = store !== 'test_data' ? product_data['link'] : `{/product/${paramsURL}}`
 
     return (
         <Link className="product"
