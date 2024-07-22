@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 
 function Product({ product_data, comment }) {
     // const link = product_data['link']
-    const padel = useSelector((state) => state.ws).padel
+    const store = useSelector((state) => state.ws).store
 
     const paramsURL = new URLSearchParams({ data: JSON.stringify(product_data) }).toString();
-    const url = padel ?product_data['link']: `{/product/${paramsURL}}`
+    const url = store != 'test_data' ? product_data['link'] : `{/product/${paramsURL}}`
 
     return (
         <Link className="product"
