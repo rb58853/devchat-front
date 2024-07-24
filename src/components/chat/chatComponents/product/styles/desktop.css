@@ -1,5 +1,5 @@
 .product {
-    background-color: rgb(43, 43, 43);
+    background-color: var(--product-box-background-color);
     font-family: 'Montserrat', sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border: none;
@@ -43,4 +43,8 @@
 .productComment {
     margin-top: 5px;
     font-size: 90%;
+}
+.imageProduct{
+    width: 100%;
+    height: 100%;
 }

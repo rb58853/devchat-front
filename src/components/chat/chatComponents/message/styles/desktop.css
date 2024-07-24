@@ -1,6 +1,6 @@
 .line {
     height: 1px;
-    background-color: rgb(255, 255, 255, 0.1);
+    background-color: var(--line-color);
     width: 100%;
 }
 
@@ -39,7 +39,8 @@
 }
 
 .userMessage {
-    background-color: rgb(255, 255, 255, 0.04);
+    background-color:var(--my-messages-background-color);
+    /* background-color:blue; */
     margin-bottom: 15px;
     /* border-radius: 5px; */
     padding: 5px;

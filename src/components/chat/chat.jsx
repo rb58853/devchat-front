@@ -137,8 +137,8 @@ function SendMessageToChat({ sendMessage, query, setQuery }) {
             <button className='buttonSendMesage'
                 onClick={() => { sendMessage() }}
             >
-                <img style={{ width: '100%', height: '100%' }}
-                    src={process.env.PUBLIC_URL + "/icons/dark/send.svg"} alt="" />
+                <img style={{ width: '100%', height: 'auto' }}
+                    src={process.env.PUBLIC_URL + "/icons/light/send.png"} alt="" />
             </button>
         </div>
     </div>

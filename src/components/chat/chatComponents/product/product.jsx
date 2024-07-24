@@ -8,13 +8,15 @@ function Product({ product_data, comment }) {
 
     const paramsURL = new URLSearchParams({ data: JSON.stringify(product_data) }).toString();
     const url = store !== 'test_data' ? product_data['link'] : `{/product/${paramsURL}}`
+    const image = ('images' in product_data && product_data['images'].length > 0) ? product_data['images'][0] : null
 
     return (
         <Link className="product"
             to={url}
         >
             <div className="productSpace">
-                img
+                {image && <img src={image} className='imageProduct' />}
+                {!image && 'img'}
             </div>
 
             <text className='productName'>
