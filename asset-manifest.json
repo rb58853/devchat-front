@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/devchat-front/static/css/main.87e2edaa.css",
-    "main.js": "/devchat-front/static/js/main.b557ce29.js",
+    "main.css": "/devchat-front/static/css/main.1b8c121b.css",
+    "main.js": "/devchat-front/static/js/main.75a949f9.js",
     "index.html": "/devchat-front/index.html",
-    "main.87e2edaa.css.map": "/devchat-front/static/css/main.87e2edaa.css.map",
-    "main.b557ce29.js.map": "/devchat-front/static/js/main.b557ce29.js.map"
+    "main.1b8c121b.css.map": "/devchat-front/static/css/main.1b8c121b.css.map",
+    "main.75a949f9.js.map": "/devchat-front/static/js/main.75a949f9.js.map"
   },
   "entrypoints": [
-    "static/css/main.87e2edaa.css",
-    "static/js/main.b557ce29.js"
+    "static/css/main.1b8c121b.css",
+    "static/js/main.75a949f9.js"
   ]
 }
