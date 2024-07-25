@@ -5,7 +5,7 @@ const initialState = {
     messages: [],
     connected: false,
     debug: false,
-    store: 'test_data',
+    store: 'padel_store_gpt',
     indexStore: 0,
 };
 

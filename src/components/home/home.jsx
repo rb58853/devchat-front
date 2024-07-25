@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { setDebug, setIndexStore, setStore, setWs, setWsConnected, setWsMessages } from '../../redux/websocket/wsSlice'
 
-const stores = ['test_data', 'padel_store', 'padel_store_gpt']
+const stores = ['padel_store_gpt']
 
 function Home() {
     const dispatch = useDispatch()
@@ -39,7 +39,7 @@ function Home() {
 
                 <button className={`buttonDebug active`}
                     onClick={() => {
-                        dispatch(setIndexStore((indexStore + 1) % 3))
+                        dispatch(setIndexStore((indexStore + 1) % stores.length))
                         dispatch(setStore(stores[indexStore]))
                     }}>
                     next
