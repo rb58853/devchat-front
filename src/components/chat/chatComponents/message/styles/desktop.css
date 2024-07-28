@@ -45,14 +45,14 @@
 .userMessage {
     background-color:var(--my-messages-background-color);
     /* background-color:blue; */
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
     /* border-radius: 5px; */
-    padding: 5px;
+    padding: 10px;
 }
 
 .serverMessage {
     background-color: rgb(0, 0, 0, 0);
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     border-radius: 5px;
     padding: 5px;
     display: flex;

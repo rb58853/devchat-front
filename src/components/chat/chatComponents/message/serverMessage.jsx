@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux'
 import Product from '../product/product'
 import './styles/desktop.css'
-import ReactMarkdown from 'react-markdown';
+// import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 
 function ServerMessage({ data }) {
@@ -45,15 +47,17 @@ function ServerMessage({ data }) {
             {data && <Message products={products} header={header} />}
             {others && <Message products={other_products} header={other_header} />}
             {ws.debug && debugMessage}
+            <div className="line" />
+        
         </div>
     )
 }
 function Message({ products, header }) {
     return (
         <div>
-            <ReactMarkdown className='headerServer'>
+            <Markdown remarkPlugins={[remarkGfm]} className='headerServer'>
                 {header}
-            </ReactMarkdown>
+            </Markdown>
             {
                 products.length > 0 &&
                 <div className='products'>

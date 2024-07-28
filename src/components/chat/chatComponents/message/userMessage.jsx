@@ -5,7 +5,7 @@ function UserMessage({ text }) {
             <text>
                 {text}
             </text>
-            <div className="line" />
+            {/* <div className="line" /> */}
         </div>
     )
 }
